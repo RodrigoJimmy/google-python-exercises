@@ -46,48 +46,48 @@ import sys
 
 
 def mimic_dict(filename):
-  """Returns mimic dict mapping each word to list of words which follow it."""
+    """Returns mimic dict mapping each word to list of words which follow it."""
 
-  import re
+    import re
 
-  with open(filename, 'r') as f:
-      # match any non word or non whitespace
-      word_list = re.sub('[^\w\s]', '', f.read()).strip().lower().split()
+    with open(filename, 'r') as file:
+        # match any non word or non whitespace
+        word_list = re.sub(r'[^\w\s]', '', file.read()).strip().lower().split()
 
-      # kick start
-      mimic_dict = {'': [word_list[0]]}
+        # kick start
+        mimic_dict = {'': [word_list[0]]}
 
-      for i in range(0, len(word_list)-1):
-          word = word_list[i]
-          words_next = mimic_dict.get(word, [])
-          words_next.append(word_list[i+1])
-          mimic_dict[word] = words_next
+        for i in range(0, len(word_list) - 1):
+            word = word_list[i]
+            words_next = mimic_dict.get(word, [])
+            words_next.append(word_list[i + 1])
+            mimic_dict[word] = words_next
 
-      # work around, last word -> first one
-      mimic_dict[word_list[-1]] = [word_list[0]]
+        # work around, last word -> first one
+        mimic_dict[word_list[-1]] = [word_list[0]]
 
-  return mimic_dict
+    return mimic_dict
 
 
 def print_mimic(mimic_dict, word):
-  """Given mimic dict and start word, prints 200 random words."""
-  mimic_words = list()
-  while(len(mimic_words) < 200):
-      word = random.choice(mimic_dict[word])
-      mimic_words.append(word)
+    """Given mimic dict and start word, prints 200 random words."""
+    mimic_words = list()
+    while(len(mimic_words) < 200):
+        word = random.choice(mimic_dict[word])
+        mimic_words.append(word)
 
-  return ' '.join(mimic_words)
+    return ' '.join(mimic_words)
 
 
 # Provided main(), calls mimic_dict() and mimic()
 def main():
-  if len(sys.argv) != 2:
-    print('usage: ./mimic.py file-to-read')
-    sys.exit(1)
+    if len(sys.argv) != 2:
+        print('usage: ./mimic.py file-to-read')
+        sys.exit(1)
 
-  dict = mimic_dict(sys.argv[1])
-  print(print_mimic(dict, ''))
+    dict = mimic_dict(sys.argv[1])
+    print(print_mimic(dict, ''))
 
 
 if __name__ == '__main__':
-  main()
+    main()
