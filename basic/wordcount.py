@@ -38,9 +38,38 @@ print_words() and print_top().
 """
 
 import sys
+import re
+
+def count_words(filename):
+    """ Returns a dict of words and their occurrences in a file"""
+    with open(filename, 'r') as file:
+        word_list = re.sub(r'[^\w\s]', '', file.read()).strip().lower().split()
+        counted_words = dict()
+        for word in word_list:
+            word_counter = counted_words.get(word, 0)
+            counted_words[word] = word_counter + 1
+
+        return counted_words
 
 
-# +++your code here+++
+def print_words(filename):
+    """ Prints in alphabetical order how many times a word occurs in a file."""
+    counted_words = count_words(filename)
+    sorted_words = [(k, counted_words[k]) for k in sorted(counted_words)]
+
+    for word, count in sorted_words:
+        print("{}: {}".format(word, count))
+
+
+def print_top(filename):
+    """ Prints the 20 most common words in a file """
+    counted_words = count_words(filename)
+    sorted_by_hits = [(k, counted_words[k]) for k in
+                      sorted(counted_words, key=counted_words.get, reverse=True)]
+
+    for word, count in sorted_by_hits[:20]:
+        print("{}: {}".format(word, count))
+
 # Define print_words(filename) and print_top(filename) functions.
 # You could write a helper utility function that reads a file
 # and builds and returns a word/count dict for it.
