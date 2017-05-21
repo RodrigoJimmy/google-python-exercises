@@ -55,18 +55,18 @@ def mimic_dict(filename):
         word_list = re.sub(r'[^\w\s]', '', file.read()).strip().lower().split()
 
         # kick start
-        mimic_dict = {'': [word_list[0]]}
+        word_dict = {'': [word_list[0]]}
 
         for i in range(0, len(word_list) - 1):
             word = word_list[i]
-            words_next = mimic_dict.get(word, [])
+            words_next = word_dict.get(word, [])
             words_next.append(word_list[i + 1])
-            mimic_dict[word] = words_next
+            word_dict[word] = words_next
 
         # work around, last word -> first one
-        mimic_dict[word_list[-1]] = [word_list[0]]
+        word_dict[word_list[-1]] = [word_list[0]]
 
-    return mimic_dict
+    return word_dict
 
 
 def print_mimic(mimic_dict, word):
